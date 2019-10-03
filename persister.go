@@ -7,6 +7,7 @@ import (
 	"encoding/gob"
 	"strconv"
 	"path/filepath"
+	//"fmt"
 )
 
 type Persister struct {
@@ -30,8 +31,7 @@ func NewPersister(seq int) *Persister{
 func (ps *Persister) PersistBlock(block *Block) {
 	ps.mu.Lock()
 	defer ps.mu.Unlock()
-	blockFilename := filepath.Join(ps.persistPath, "block_"+strconv.Itoa(ps.persistHeight))
-	//fmt.Println(blockFilename)
+	blockFilename := filepath.Join(ps.persistPath, "block_"+strconv.Itoa(ps.persistHeight)+"_"+strconv.Itoa(int(block.Nonce)))
 	ps.persistHeight++
 	file, err := os.Create(blockFilename)
 	defer file.Close()

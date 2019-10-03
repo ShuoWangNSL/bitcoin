@@ -106,7 +106,10 @@ func (chain *Blockchain) Validate(blockInfo *BlockInfo) int {
 	prevhash := chain.hashes[chain.curHeight]
 	if !bytes.Equal(prevhash[:], blockInfo.B.PrevBlockHash[:]) {
 		return 0
+	} else {
+		return 2
 	}
+
 	hash := sha256.Sum256(blockInfo.B.SerializeBlock())
 	if !bytes.Equal(hash[:], blockInfo.Hash[:]) {
 		return 0

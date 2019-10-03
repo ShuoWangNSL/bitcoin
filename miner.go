@@ -5,7 +5,7 @@ import (
 	"crypto/sha256"
 	"sync"
 	"math"
-	"time"
+	//"time"
 	"math/rand"
 )
 
@@ -34,7 +34,7 @@ func (miner *Miner) PoW (block *Block, newblock chan struct{}) (bool, [32]byte) 
 		if bytes.Compare(hash[:], tgt) < 0 {
 			return true, hash
 		}
-		time.Sleep(5000 * time.Millisecond)
+		//time.Sleep(5000 * time.Millisecond)
 	}
 
 	for i := uint32(0); i < random; i++ {
@@ -48,7 +48,7 @@ func (miner *Miner) PoW (block *Block, newblock chan struct{}) (bool, [32]byte) 
 		if bytes.Compare(hash[:], tgt) < 0 {
 			return true, hash
 		}
-		time.Sleep(5000 * time.Millisecond)
+		//time.Sleep(5000 * time.Millisecond)
 	}
 	fmt.Errorf("No solution")
 	return false, [32]byte{}
