@@ -7,6 +7,7 @@ import (
 )
 
 type Message struct {
+	Src		int
 	Type    string
 	Payload []byte
 }
@@ -29,4 +30,5 @@ func (b *Broadcaster) Broadcast(msg *Message)  {
 		b.Unicast(msg, i)
 	}
 }
+
 

@@ -11,8 +11,14 @@ type Block struct {
 	Payload [1048576]byte //empty payload for simulating transmission
 }
 
+type BlockInfo struct{
+	B *Block
+	Hash [32]byte
+	Height int
+}
 
-func (block *Block) Serialize() []byte {
+
+func (block *Block) SerializeBlock() []byte {
 	var buffer bytes.Buffer
 	encoder := gob.NewEncoder(&buffer)
 	err := encoder.Encode(block)
@@ -22,7 +28,7 @@ func (block *Block) Serialize() []byte {
 	return buffer.Bytes()
 }
 
-func Deserialize(serializedBlock []byte) *Block {
+func DeserializeBlock(serializedBlock []byte) *Block {
 	var block Block
 	decoder := gob.NewDecoder(bytes.NewReader(serializedBlock))
 	err := decoder.Decode(&block)
@@ -32,4 +38,23 @@ func Deserialize(serializedBlock []byte) *Block {
 	return &block
 }
 
+func (blockInfo *BlockInfo) SerializeBlockInfo() []byte {
+	var buffer bytes.Buffer
+	encoder := gob.NewEncoder(&buffer)
+	err := encoder.Encode(blockInfo)
+	if err!=nil{
+		log.Panic(err)
+	}
+	return buffer.Bytes()
+}
 
+
+func DeserializeBlockInfo(serializedBlock []byte) *BlockInfo {
+	var blockInfo BlockInfo
+	decoder := gob.NewDecoder(bytes.NewReader(serializedBlock))
+	err := decoder.Decode(&blockInfo)
+	if err!=nil{
+		log.Panic(err)
+	}
+	return &blockInfo
+}

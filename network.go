@@ -1,5 +1,11 @@
 package main
 
+import (
+	"bytes"
+	"encoding/gob"
+	"log"
+)
+
 type Network struct {
 	InChans     map[int]chan *Message
 	OutChans    map[int] map[int]chan *Message
@@ -11,7 +17,7 @@ func NewNetwork (nodes []int, graph map[int][]int) *Network {
 	network.OutChans = make(map[int] map[int]chan *Message)
 	for i := 0; i < len(nodes); i++ {
 		dst := nodes[i]
-		network.InChans[dst] = make(chan *Message, 50)
+		network.InChans[dst] = make(chan *Message, 100)
 	}
 	for i := 0; i < len(nodes); i++ {
 		src := nodes[i]
@@ -23,3 +29,24 @@ func NewNetwork (nodes []int, graph map[int][]int) *Network {
 	}
 	return &network
 }
+
+
+func Serialize(T interface{}) []byte {
+	var buffer bytes.Buffer
+	encoder := gob.NewEncoder(&buffer)
+	err := encoder.Encode(T)
+	if err!=nil{
+		log.Panic(err)
+	}
+	return buffer.Bytes()
+}
+
+
+func Deserialize(payload []byte, T interface{}) {
+	decoder := gob.NewDecoder(bytes.NewReader(payload))
+	err := decoder.Decode(T)
+	if err!=nil{
+		log.Panic(err)
+	}
+}
+
